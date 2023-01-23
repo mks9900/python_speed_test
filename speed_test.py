@@ -7,6 +7,17 @@ from xgboost import XGBClassifier
 import xgboost as xgb
 from sklearn.metrics import accuracy_score
 import time
+import argparse
+
+parser = argparse.ArgumentParser()
+# parser.add_argument("-n", "--num_passes", type=int)
+parser.add_argument("-s", "--size", type=int)
+
+args = parser.parse_args()
+dataset_size = args.size
+# num_passes = args.num_passes
+# sample = args.sample
+
 
 # Creating a linearly separable dataset using Gaussian Distributions.
 # The first half of the number in Y is 0 and the other half 1.
@@ -14,10 +25,11 @@ import time
 # the second half of the features (setting the value of the means quite
 # similar) so that make quite simple the classification between the
 # classes (the data is linearly separable).
+
+print("Generating dataset...")
 dataset_prep_start_time = time.time()
 
-dataset_len = 30_000_000
-dlen = int(dataset_len / 2)
+dlen = int(dataset_size / 2)
 X_11 = pd.Series(np.random.normal(2, 2, dlen))
 X_12 = pd.Series(np.random.normal(9, 2, dlen))
 X_1 = pd.concat([X_11, X_12]).reset_index(drop=True)
@@ -63,6 +75,8 @@ total = X_train.shape[0] + X_test.shape[0]
 # print('X_test Percentage:', (X_test.shape[0]/total)*100, '%')
 
 dataset_prep_stop_time = time.time()
+
+
 # %%time
 print("\nFitting model...\n")
 model_fit_starting_time = time.time()
@@ -73,9 +87,17 @@ for n in range(10):
 
 ending_time = time.time()
 
-# sk_pred = model.predict(X_test)
-# sk_pred = np.round(sk_pred)
-# sk_acc = round(accuracy_score(y_test, sk_pred), 2)
-# print("XGB accuracy using Sklearn:", sk_acc*100, '%')
-print(f"It took {(ending_time-model_fit_starting_time):.3f} seconds!")
-print(f"It took {(dataset_prep_stop_time - dataset_prep_stop_time):.3f} seconds!")
+print("\nGenerating dataset...\n")
+pred_start_time = time.time()
+sk_pred = model.predict(X_test)
+sk_pred = np.round(sk_pred)
+sk_acc = round(accuracy_score(y_test, sk_pred), 2)
+pred_stop_time = time.time()
+
+print("XGB accuracy using Sklearn:", sk_acc * 100, "%")
+
+print(
+    f"Data prep. took {(dataset_prep_stop_time - dataset_prep_start_time):.3f} seconds!"
+)
+print(f"Fitting model took {(ending_time - model_fit_starting_time):.3f} seconds!")
+print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds!")
