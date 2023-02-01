@@ -1,13 +1,14 @@
+import argparse
+import time
+
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
-from xgboost import XGBClassifier
 import xgboost as xgb
+from sklearn import preprocessing
 from sklearn.metrics import accuracy_score
-import time
-import argparse
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from xgboost import XGBClassifier
 
 parser = argparse.ArgumentParser()
 # parser.add_argument("-n", "--num_passes", type=int)
@@ -17,7 +18,6 @@ args = parser.parse_args()
 dataset_size = args.size
 # num_passes = args.num_passes
 # sample = args.sample
-
 
 # Creating a linearly separable dataset using Gaussian Distributions.
 # The first half of the number in Y is 0 and the other half 1.
@@ -85,19 +85,21 @@ for n in range(10):
     model = XGBClassifier(tree_method="hist")
     model.fit(X_train, y_train)
 
-ending_time = time.time()
+model_fit_stop_time = time.time()
 
 print("\nGenerating dataset...\n")
 pred_start_time = time.time()
 sk_pred = model.predict(X_test)
 sk_pred = np.round(sk_pred)
-sk_acc = round(accuracy_score(y_test, sk_pred), 2)
+sk_acc = accuracy_score(y_test, sk_pred)
 pred_stop_time = time.time()
 
-print("XGB accuracy using Sklearn:", sk_acc * 100, "%")
+print(f"XGB accuracy using Sklearn = {sk_acc * 100:.2f} %")
 
 print(
     f"Data prep. took {(dataset_prep_stop_time - dataset_prep_start_time):.3f} seconds!"
 )
-print(f"Fitting model took {(ending_time - model_fit_starting_time):.3f} seconds!")
+print(
+    f"Fitting model took {(model_fit_stop_time - model_fit_starting_time):.3f} seconds!"
+)
 print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds!")
