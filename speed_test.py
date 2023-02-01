@@ -26,7 +26,7 @@ dataset_size = args.size
 # similar) so that make quite simple the classification between the
 # classes (the data is linearly separable).
 
-print("Generating dataset...")
+print("\nGenerating dataset...")
 dataset_prep_start_time = time.time()
 
 dlen = int(dataset_size / 2)
@@ -78,7 +78,7 @@ dataset_prep_stop_time = time.time()
 
 
 # %%time
-print("\nFitting model...\n")
+print("Fitting model...")
 model_fit_starting_time = time.time()
 
 for n in range(10):
@@ -87,19 +87,28 @@ for n in range(10):
 
 model_fit_stop_time = time.time()
 
-print("\nGenerating dataset...\n")
+print("Predicting with fitted model...")
 pred_start_time = time.time()
 sk_pred = model.predict(X_test)
 sk_pred = np.round(sk_pred)
 sk_acc = accuracy_score(y_test, sk_pred)
 pred_stop_time = time.time()
 
+<<<<<<< HEAD
 print(f"XGB accuracy using Sklearn = {sk_acc * 100:.2f} %")
+=======
+print(f"\nModel accuracy is {100*sk_acc:.1f} %.")
+>>>>>>> 0d136e1487553f8bfaa9fb9c53ec154057bd3b14
 
 print(
-    f"Data prep. took {(dataset_prep_stop_time - dataset_prep_start_time):.3f} seconds!"
+    f"Data prep. took {(dataset_prep_stop_time - dataset_prep_start_time):.3f} seconds."
 )
+<<<<<<< HEAD
 print(
     f"Fitting model took {(model_fit_stop_time - model_fit_starting_time):.3f} seconds!"
 )
 print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds!")
+=======
+print(f"Fitting model took {(ending_time - model_fit_starting_time):.3f} seconds.")
+print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds.")
+>>>>>>> 0d136e1487553f8bfaa9fb9c53ec154057bd3b14
