@@ -3,11 +3,13 @@ import time
 
 import numpy as np
 import pandas as pd
-import xgboost as xgb
+
+# import xgboost as xgb
 from sklearn import preprocessing
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+
+# from sklearn.model_selection import train_test_split
+# from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
 
 parser = argparse.ArgumentParser()
@@ -47,7 +49,7 @@ df = pd.concat([X_1, X_2, X_3, X_4, Y], axis=1)
 df.columns = ["X1", "X2", "X3", "X_4", "Y"]
 # df.head()
 
-train_size = 0.80
+TRAIN_SIZE = 0.80
 X = df.drop(["Y"], axis=1).values
 y = df["Y"]
 
@@ -59,7 +61,7 @@ y = label_encoder.fit_transform(y)
 
 # identify shape and indices
 num_rows, num_columns = df.shape
-delim_index = int(num_rows * train_size)
+delim_index = int(num_rows * TRAIN_SIZE)
 
 # Splitting the dataset in training and test sets
 X_train, y_train = X[:delim_index, :], y[:delim_index]
@@ -97,7 +99,6 @@ pred_stop_time = time.time()
 print(f"XGB accuracy using Sklearn = {sk_acc * 100:.2f} %")
 print(f"\nModel accuracy is {100*sk_acc:.1f} %.")
 
-
 print(
     f"Data prep. took {(dataset_prep_stop_time - dataset_prep_start_time):.3f} seconds."
 )
@@ -105,5 +106,7 @@ print(
     f"Fitting model took {(model_fit_stop_time - model_fit_starting_time):.3f} seconds!"
 )
 print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds!")
-print(f"Fitting model took {(ending_time - model_fit_starting_time):.3f} seconds.")
+print(
+    f"Fitting model took {(model_fit_stop_time - model_fit_starting_time):.3f} seconds."
+)
 print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds.")
