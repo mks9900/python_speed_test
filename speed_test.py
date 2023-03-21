@@ -67,19 +67,13 @@ delim_index = int(num_rows * TRAIN_SIZE)
 X_train, y_train = X[:delim_index, :], y[:delim_index]
 X_test, y_test = X[delim_index:, :], y[delim_index:]
 
-# Checking sets dimensions
-# print('X_train dimensions: ', X_train.shape, 'y_train: ', y_train.shape)
-# print('X_test dimensions:', X_test.shape, 'y_validation: ', y_test.shape)
 
 # Checking dimensions in percentages
 total = X_train.shape[0] + X_test.shape[0]
-# print('X_train Percentage:', (X_train.shape[0]/total)*100, '%')
-# print('X_test Percentage:', (X_test.shape[0]/total)*100, '%')
 
 dataset_prep_stop_time = time.time()
 
 
-# %%time
 print("Fitting model...")
 model_fit_starting_time = time.time()
 
@@ -106,7 +100,5 @@ print(
     f"Fitting model took {(model_fit_stop_time - model_fit_starting_time):.3f} seconds!"
 )
 print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds!")
-print(
-    f"Fitting model took {(model_fit_stop_time - model_fit_starting_time):.3f} seconds."
-)
-print(f"Predicting with model took {(pred_stop_time - pred_start_time):.3f} seconds.")
+
+print(f"\nFinished!")
